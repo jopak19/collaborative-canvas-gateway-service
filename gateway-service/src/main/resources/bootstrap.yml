@@ -1,0 +1,33 @@
+eureka:
+    client: 
+        register-with-eureka: true
+        fetch-register: true
+        defaultZone: http://localhost:8761/eureka
+spring:
+    application.name: gateway-service
+    profiles:
+        active: mvcprod
+    config: 
+        import: optional:configserver:http://localhost:7000
+    cloud:
+        loadbalancer:
+            ribbon:
+                enabled: false
+        gateway:
+            routes:
+                - id: player
+                  uri: lb://player-service/player
+                  predicates:
+                    - Path=/player/**
+                - id: game
+                  uri: lb://game-service/play
+                  predicates:
+                    - Path=/play/**
+                - id: canvas
+                  uri: lb://canvas-service/canvas
+                  predicates:
+                    - Path=/canvas/**
+server:
+    port: 8032
+
+
