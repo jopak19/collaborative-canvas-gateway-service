@@ -14,10 +14,10 @@
 	<name>gateway-service</name>
 	<description>gateway service for canva service</description>
 	<properties>
-		<java.version>17</java.version>
-		<spring-cloud.version>2022.0.3</spring-cloud.version>
+		<java.version>19</java.version>
 	</properties>
 	<dependencies>
+		<!--
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-actuator</artifactId>
@@ -41,16 +41,52 @@
 			<scope>runtime</scope>
 			<optional>true</optional>
 		</dependency>
+		-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-webflux</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
+			<groupId>io.projectreactor</groupId>
+			<artifactId>reactor-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<!--
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-stream-rabbit</artifactId>
+			<version>4.0.2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.amqp</groupId>
+			<artifactId>spring-rabbit</artifactId>
+		</dependency>
+		-->
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-stream-kafka</artifactId>
+			<version>4.0.2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.kafka</groupId>
+			<artifactId>spring-kafka</artifactId>
+			<version>3.0.8</version>
+		</dependency>
+
+		<!--
+		<dependency>
 		    <groupId>org.springframework.cloud</groupId>
 		    <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
-		    </dependency>
+		</dependency>
+		-->
 	</dependencies>
+	<!--
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
@@ -63,6 +99,7 @@
 		</dependencies>
 	</dependencyManagement>
 
+	-->
 	<build>
 		<plugins>
 			<plugin>
