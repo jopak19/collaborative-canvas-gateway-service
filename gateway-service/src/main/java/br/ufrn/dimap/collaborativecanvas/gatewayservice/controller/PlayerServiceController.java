@@ -32,7 +32,7 @@ public class PlayerServiceController {
 
     @PostMapping(produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public Mono<String> addPlayer(@RequestBody PlayerDTO player) {
-        streamBridge.send("game-in", player);
+        streamBridge.send("player-create-in", player);
         return Mono.just("request received");
 
     }
@@ -59,7 +59,8 @@ public class PlayerServiceController {
 
     @PostMapping(produces = MediaType.TEXT_EVENT_STREAM_VALUE,value="/login")
     public Mono<String> login(@RequestBody LoginDTO login) {
-        streamBridge.send("game-in", login);
+        System.out.println("login");
+        streamBridge.send("player-login-in", login);
         return Mono.just("request received");
     }
 
