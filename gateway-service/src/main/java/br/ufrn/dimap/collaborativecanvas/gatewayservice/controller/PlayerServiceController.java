@@ -20,13 +20,13 @@ public class PlayerServiceController {
 
     @GetMapping(produces = MediaType.TEXT_EVENT_STREAM_VALUE,value="/{id}")
     public Mono<String> getPlayerById(@PathVariable Long id) {
-        streamBridge.send("game-in", id);
+        streamBridge.send("player-getById-in", id);
         return Mono.just("request received");
     }
 
     @GetMapping(produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public Mono<String> getAllPlayers() {
-        streamBridge.send("game-in", "");
+        streamBridge.send("player-getAll-in", "");
         return Mono.just("request received");
     }
 
@@ -39,13 +39,13 @@ public class PlayerServiceController {
 
     @PutMapping(produces = MediaType.TEXT_EVENT_STREAM_VALUE,value="/{id}")
     public Mono<String> updatePlayer(@PathVariable Long id, @RequestBody PlayerDTO player) {
-        streamBridge.send("game-in", player);
+        streamBridge.send("player-update-in", player);
         return Mono.just("request received");
     }
 
     @DeleteMapping(produces = MediaType.TEXT_EVENT_STREAM_VALUE, value = "/{id}")
     public Mono<String> deletePlayer(@PathVariable Long id) {
-        streamBridge.send("game-in", id);
+        streamBridge.send("player-delete-in", id);
         return Mono.just("request received");
     }
 
@@ -66,7 +66,7 @@ public class PlayerServiceController {
 
     @GetMapping(produces = MediaType.TEXT_EVENT_STREAM_VALUE,value="/ranking")
     public Mono<String> getAllPlayersByRanking() {
-        streamBridge.send("game-in", "");
+        streamBridge.send("player-getAllByRanking-in", "");
         return Mono.just("request received");
     }
 
