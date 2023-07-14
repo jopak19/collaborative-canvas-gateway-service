@@ -1,10 +1,79 @@
+
+server:
+    port: 8032
+eureka:
+    client: 
+        register-with-eureka: true
+        fetch-register: true
+        defaultZone: http://localhost:8761/eureka
+
+management:
+    endpoint:
+        web:
+            exposure: 
+                include: "*"
+        health:
+            show-details: always
+            circuitbreakers:
+                enabled: true
+            ratelimiters:
+                enabled: true
+
+resilience4j:
+  circuitbreaker:
+    configs:
+      default:
+        registerHealthIndicator: true
+    instances:
+      player-service:
+        registerHealthIndicator: true
+        slidingWindowSize: 8
+        failureRateThreshold: 50
+        ringBufferSizeInClosedState: 5
+        ringBufferSizeInHalfOpenState: 3
+        waitDurationInOpenState: 15000
+      canva-service:
+        registerHealthIndicator: true
+        slidingWindowSize: 8
+        failureRateThreshold: 50
+        ringBufferSizeInClosedState: 5
+        ringBufferSizeInHalfOpenState: 3
+        waitDurationInOpenState: 15000
+
 spring:
     application.name: gateway-service
     profiles:
         active: prod
-    config: 
-        import: optional:configserver:http://localhost:7000
-server:
-    port: 8032
-
-
+    cloud:
+        loadbalancer:
+            ribbon:
+                enabled: false
+        gateway:
+            routes:
+                - id: player
+                  uri: lb://player-service/player
+                  predicates:
+                    - Path=/player/**
+                  filters:
+                    - name: CircuitBreaker
+                      args:
+                         name: player-service
+                         fallbackuri: forward:/playerServiceFallBack
+                - id: game
+                  uri: lb://game-service/play
+                  predicates:
+                    - Path=/play/**
+                  filters:
+                    - name: CircuitBreaker
+                      args:
+                         name: game-service
+                         fallbackuri: forward:/gameServiceFallBack
+                - id: canvas
+                  uri: lb://canvas-service/canvas
+                  predicates:
+                    - Path=/canvas/**
+                  filters:
+                    - name: CircuitBreaker
+                      args:
+                         name: canva-service
+                         fallbackuri: forward:/canvaServiceFallBack
